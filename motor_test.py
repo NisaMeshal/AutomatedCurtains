@@ -4,6 +4,23 @@ from datetime import datetime
 
 GPIO.setmode(GPIO.BOARD)
 
+
+"""
+Hypothetical message object we might use
+{
+        "state": "open",
+        "time":
+        {
+                "open": time,
+                "close": time
+        },
+        "sensor":
+        {
+                "light": yes/no?
+        }
+}
+"""
+
 # message to be imported from AWS
 message = 11
 close = 11
