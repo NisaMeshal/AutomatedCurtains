@@ -8,15 +8,11 @@ GPIO.setmode(GPIO.BOARD)
 """
 Hypothetical message object we might use
 {
-        "state": "open",
+        "setting": "time" or "sensor",
         "time":
         {
                 "open": time,
                 "close": time
-        },
-        "sensor":
-        {
-                "light": yes/no?
         }
 }
 """
