@@ -9,7 +9,7 @@ CLIENT_ID = "frontend"
 PATH_TO_CERTIFICATE = "certificates/certificate.pem.crt"
 PATH_TO_PRIVATE_KEY = "certificates/private.pem.key"
 PATH_TO_AMAZON_ROOT_CA_1 = "certificates/AmazonRootCA1.pem"
-TOPIC = "test/testing"
+TOPIC = "test/topic"
 
 def send_message(message: dict):
     # Spin up resources

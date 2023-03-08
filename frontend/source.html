@@ -2,55 +2,40 @@
 <html>
     <head>
         <link rel="stylesheet" href="./CSS/style.css">
-
+        <script>
+            document.addEventListener('DOMContentLoaded', e => {
+                document.forms.form01.addEventListener('change', e => {
+                    if (e.target.name == 'setting') {
+                        let setting = new Boolean(parseInt(e.target.form.setting.value));
+                        e.target.form.times.disabled = setting.valueOf();
+                    }
+                });
+            });
+        </script>
     </head>
     
     <body>
         <h1>Automated Curtain Controls</h1>
     
-
-        <h3>Time Region</h3>
-        <form action="">
-            <input type="radio" id="pacific" value="pst">
-            <label for="pacific">Pacific</label>
-            
-            <input type="radio" id="eastern" value="est">
-            <label for="eastern">Eastern</label>
-
-            <input type="radio" id="central" value="ct">
-            <label for="central">Central</label>
-
-            <input type="radio" id="mountain" value="mt">
-            <label for="mountain">Mountain</label>
-
-            <input type="submit" value="Submit">
-        </form>
-
-        <br>
-        <br>
-        <br>
-
-        <form action="">
-            <label for="open_time">Open Time</label>
-            <input type="text" id="open_time">
-            <input type="radio" id="AM" value="am">
-            <label for="AM">A.M.</label>
-            <input type="radio" id="PM" value="pm">
-            <label for="PM">P.M.</label>
-            <input type="submit" value="Submit">
-        </form>
-
-        <form action="">
-            <label for="close_time">Close Time</label>
-            <input type="text" id="close_time">
-            <input type="radio" id="AM" value="am">
-            <label for="AM">A.M.</label>
-            <input type="radio" id="PM" value="pm">
-            <label for="PM">P.M.</label>
-            <input type="submit" value="Submit">
-        </form>
-
-        <h3>Control with light</h3>
+        <form name="form01">
+            <div class="form-item">
+              <label><input type="radio" name="setting" value="1" checked/>Sensor</label>
+              <label><input type="radio" name="setting" value="0"/>Time</label>
+            </div>
+            <fieldset name="times" disabled>
+              <div class="form-item">
+                <label for="open" class="req-field">Open Time</label>
+                <input id="open" name="open" type="text"
+                  autocomplete="street-address" required/>
+              </div>
+              <div class="form-item">
+                <label for="close" class="req-field">Close Time</label>
+                <input id="close" name="close" type="text"
+                  autocomplete="address-level2" required/>
+              </div>
+            </fieldset>
+          </form>
+          
 
     </body>
 </html>

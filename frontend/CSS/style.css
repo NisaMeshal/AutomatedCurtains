@@ -14,3 +14,16 @@ td {
     font-size: x-large; 
        
 }
+
+input:required {
+    border: red thin solid;
+  }
+  
+  input:disabled {
+    border: darkgray thin solid;
+    background-color: lightgray;
+  }
+  
+  fieldset:disabled {
+    display: none;
+  }
