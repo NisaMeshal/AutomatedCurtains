@@ -4,17 +4,23 @@ from datetime import datetime
 
 GPIO.setmode(GPIO.BOARD)
 
+def is_now(time):
+        now = datetime.now().time().replace(second=0, microsecond=0)
+        t = time.replace(second=0, microsecond=0)
+        if t == now:
+                return True
+        else:
+                return False
 
 """
 Hypothetical message object we might use
 {
         "setting": "time" or "sensor",
-        "time":
-        {
-                "open": time,
-                "close": time
-        }
+        "open": [hour, minute],
+        "close": [hour, minute]
 }
+* open and close are only included if setting is "time"
+* hour and minute are ints
 """
 
 # message to be imported from AWS
