@@ -24,16 +24,18 @@
             </div>
             <fieldset name="times" disabled>
               <div class="form-item">
-                <label for="open" class="req-field">Open Time</label>
+                <!-- <label for="open" class="req-field">Open Time</label>
                 <input id="open" name="open" type="text"
-                  autocomplete="street-address" required/>
+                  autocomplete="street-address" required/> -->
+                <p>Open Time: <input type="time" id="open" name="open" required> </p>
+                
               </div>
               <div class="form-item">
-                <label for="close" class="req-field">Close Time</label>
-                <input id="close" name="close" type="text"
-                  autocomplete="address-level2" required/>
+                <p>Close Time: <input type="time" id="close" name="close" required> </p>
               </div>
             </fieldset>
+            <br>
+            <button>Submit</button>
           </form>
           
 
