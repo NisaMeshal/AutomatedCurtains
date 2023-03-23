@@ -7,9 +7,6 @@ import threading
 import time
 from uuid import uuid4
 import json
-from sense_hat import SenseHat
-
-sense = SenseHat()
 
 
 # This sample uses the Message Broker for AWS IoT to send and receive messages
@@ -89,7 +86,8 @@ if __name__ == '__main__':
 
     message_count = cmdUtils.get_command("count")
     message_topic = cmdUtils.get_command(cmdUtils.m_cmd_topic)
- 
+    message_topic = "curtain/setting"
+
     # Subscribe
     print("Subscribing to topic '{}'...".format(message_topic))
     subscribe_future, packet_id = mqtt_connection.subscribe(
@@ -99,56 +97,6 @@ if __name__ == '__main__':
 
     subscribe_result = subscribe_future.result()
     print("Subscribed with {}".format(str(subscribe_result['qos'])))
-
-    # Publish message to server desired number of times.
-    # This step is skipped if message is blank.
-    # This step loops forever if count was set to 0.
-    
-
-
-   
-    if message_count == 0:
-        print ("Sending messages until program killed")
-    else:
-        print ("Sending {} message(s)".format(message_count))
-
-    publish_count = 1
-    while (publish_count <= message_count) or (message_count == 0):
-        pressure = sense.get_pressure()
-        #print(pressure)
-
-        temp = sense.get_temperature()
-        #print(temp)
-
-        humidity = sense.get_humidity()
-        #print(humidity)
-
-        t = round(temp, 1)
-        p = round(pressure, 1)
-        h = round(humidity, 1)
-
-        # Create the message
-        # str() converts the value to a string so it can be concatenated
-        message1 = "Temperature: " + str(t) + " Pressure: " + str(p) + " Humidity: " + str(h)
-
-        
-        #message = "{} [{}]".format(message_string + message1, publish_count)
-        
-        message = "{} [{}]".format(message1, publish_count)
-                    
-        print("Publishing message to topic '{}': {}".format(message_topic, message))
-        message_json = json.dumps(message)
-        
-
-        
-        mqtt_connection.publish(
-            topic=message_topic,
-            payload=message_json,
-            qos=mqtt.QoS.AT_LEAST_ONCE)
-        time.sleep(1)
-        publish_count += 1
-
-
 
     # Wait for all messages to be received.
     # This waits forever if count was set to 0.

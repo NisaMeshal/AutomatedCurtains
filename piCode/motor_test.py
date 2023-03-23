@@ -27,7 +27,7 @@ Hypothetical message object we might use
 message = 11
 close = 11
 open = 12
-if message = close:
+if message == close:
         Motor1A = close
 else:
         Motor1A = open
