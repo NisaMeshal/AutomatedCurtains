@@ -5,9 +5,6 @@ import threading
 import time
 from uuid import uuid4
 import json
-from sense_hat import SenseHat
-
-sense = SenseHat()
 
 
 class RunMotor():
@@ -16,10 +13,30 @@ class RunMotor():
     from datetime import datetime
 
     GPIO.setmode(GPIO.BOARD)
-
+    
+    time_setting = False
     open = True
     open_time = []
     close_time = []
+    
+    def parse_setting(self, payload):
+        if payload["setting"] == "open":
+            if open == True:
+                return
+            else:
+                self.open_curtain()
+                open = True
+        if payload["setting"] == "close":
+            if open == True:
+                self.close_curtain()
+                open = False
+            else:
+                return
+        if payload["setting"] == "time":
+            time_setting = True
+            open_time = payload["setting"]["open"]
+            close_time = payload["setting"]["close"]
+            
 
     def open_curtain(self):
         GPIO.setup(12, GPIO.OUT)
@@ -55,12 +72,18 @@ class RunMotor():
 
     def is_now(self, time):
         now = datetime.now().time().replace(second=0, microsecond=0)
-        t = time.replace(second=0, microsecond=0)
-        if t == now:
+        now = int(now.strftime('%H:%M')
+        now = now.split(":")
+        now = [str(x) for x in now]
+        if now == time:
+            print("it's now")
             return True
         else:
+            ("it's not now")
             return False
 
+
+curtain = RunMotor()
 # This sample uses the Message Broker for AWS IoT to send and receive messages
 # through an MQTT connection. On startup, the device connects to the server,
 # subscribes to a topic, and begins publishing messages to that topic.
@@ -127,7 +150,7 @@ def on_resubscribe_complete(resubscribe_future):
 # Callback when the subscribed topic receives a message
 
 
-def on_message_received(topic, payload, curtain, dup, qos, retain, **kwargs):
+def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     """
     Hypothetical message object we might use
     {
@@ -140,6 +163,9 @@ def on_message_received(topic, payload, curtain, dup, qos, retain, **kwargs):
     """
     print("Received message from topic '{}': {}".format(topic, payload))
     global received_count
+    
+    curtain.parse_setting(payload)
+    
     received_count += 1
     if received_count == cmdUtils.get_command("count"):
         received_all_event.set()
@@ -170,7 +196,7 @@ if __name__ == '__main__':
     subscribe_future, packet_id = mqtt_connection.subscribe(
         topic=message_topic,
         qos=mqtt.QoS.AT_LEAST_ONCE,
-        callback=on_message_received(curtain=curtain))
+        callback=on_message_received)
 
     subscribe_result = subscribe_future.result()
     print("Subscribed with {}".format(str(subscribe_result['qos'])))
