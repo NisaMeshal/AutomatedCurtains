@@ -9,7 +9,7 @@ CLIENT_ID = "frontend"
 PATH_TO_CERTIFICATE = "certificates/certificate.pem.crt"
 PATH_TO_PRIVATE_KEY = "certificates/private.pem.key"
 PATH_TO_AMAZON_ROOT_CA_1 = "certificates/AmazonRootCA1.pem"
-TOPIC = "test/topic"
+TOPIC = "curtain/setting"
 
 def send_message(message: dict):
     # Spin up resources
@@ -17,14 +17,14 @@ def send_message(message: dict):
     host_resolver = io.DefaultHostResolver(event_loop_group)
     client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
-                endpoint=ENDPOINT,
-                cert_filepath=PATH_TO_CERTIFICATE,
-                pri_key_filepath=PATH_TO_PRIVATE_KEY,
-                client_bootstrap=client_bootstrap,
-                ca_filepath=PATH_TO_AMAZON_ROOT_CA_1,
-                client_id=CLIENT_ID,
-                clean_session=False,
-                keep_alive_secs=6
+        endpoint=ENDPOINT,
+        cert_filepath=PATH_TO_CERTIFICATE,
+        pri_key_filepath=PATH_TO_PRIVATE_KEY,
+        client_bootstrap=client_bootstrap,
+        ca_filepath=PATH_TO_AMAZON_ROOT_CA_1,
+        client_id=CLIENT_ID,
+        clean_session=False,
+        keep_alive_secs=6
     )
     print(f"Connecting to {ENDPOINT} with client ID '{CLIENT_ID}'...")
 

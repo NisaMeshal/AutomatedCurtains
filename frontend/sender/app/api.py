@@ -1,12 +1,38 @@
+from typing import Optional
 from fastapi import FastAPI
 
 from app.sender import send_message
 
 app = FastAPI()
 
+# @app.get("/")
+# async def root():
+#     return {"message": "Hello World!"}
+
 @app.get("/")
-async def root():
-    return {"message": "Hello World!"}
+async def send(setting: int, open: Optional[str] = None, close: Optional[str] = None):
+    print(f"setting: {setting}")
+    print(f"open: {open}")
+    print(f"close: {close}")
+
+    send_message({"hi": "bye"})
+
+    if setting == 1: # sensor
+        message = {"setting": "sensor"}
+        print(message)
+        send_message(message)
+    elif setting == 0:
+        message = {"setting": "time"}
+        open_hour, open_minute = [int(x) for x in open.split(":")]
+        close_hour, close_minute = [int(x) for x in close.split(":")]
+        open = [open_hour, open_minute]
+        close = [close_hour, close_minute]
+        message["open"] = open
+        message["close"] = close
+        print(message)
+        send_message(message)
+
+    return {"hi": "bye"}
 
 @app.get("/time/{open_hour}/{open_minute}/{close_hour}/{close_minute}")
 async def time(open_hour: int, open_minute: int, close_hour: int, close_minute: int):

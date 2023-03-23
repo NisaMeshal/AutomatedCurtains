@@ -3,6 +3,7 @@
     <head>
         <link rel="stylesheet" href="./CSS/style.css">
         <script>
+            // this is how we hide the time fields based on setting value
             document.addEventListener('DOMContentLoaded', e => {
                 document.forms.form01.addEventListener('change', e => {
                     if (e.target.name == 'setting') {
@@ -11,33 +12,44 @@
                     }
                 });
             });
+
+            // this calls submitForm() when submit is clicked
+            const thisForm = document.getElementById('form01');
+            thisForm.addEventListener('submit', async function (e) {
+                // submitForm(e, this);
+                e.preventDefault();
+                const formData = new FormData(thisForm).entries()
+                const response = await fetch('https://localhost:80/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(Object.fromEntries(formData))
+                });
+
+                const result = await response.json();
+                console.log(result)
+            });
         </script>
     </head>
     
     <body>
         <h1>Automated Curtain Controls</h1>
     
-        <form name="form01">
+        <form id="form01" name="form01" action="http://localhost:80/">
             <div class="form-item">
               <label><input type="radio" name="setting" value="1" checked/>Sensor</label>
               <label><input type="radio" name="setting" value="0"/>Time</label>
             </div>
             <fieldset name="times" disabled>
               <div class="form-item">
-                <!-- <label for="open" class="req-field">Open Time</label>
-                <input id="open" name="open" type="text"
-                  autocomplete="street-address" required/> -->
                 <p>Open Time: <input type="time" id="open" name="open" required> </p>
-                
               </div>
               <div class="form-item">
                 <p>Close Time: <input type="time" id="close" name="close" required> </p>
               </div>
             </fieldset>
             <br>
-            <button>Submit</button>
+            <button id="submit">Submit</button>
           </form>
           
-
     </body>
 </html>
