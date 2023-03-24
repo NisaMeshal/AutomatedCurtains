@@ -198,7 +198,8 @@ if __name__ == '__main__':
     print("{} message(s) received.".format(received_count))
 
     while True:
-        sleep(60)
+        sleep(30)
+        print("Checking setting")
         if curtain.setting == "time":
             if curtain.is_now(curtain.open_time) == True:
                 curtain.open_curtain()
