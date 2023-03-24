@@ -154,6 +154,14 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     global received_count
     
     curtain.parse_setting(payload)
+    print("Checking setting")
+    if curtain.setting == "time":
+        if curtain.is_now(curtain.open_time) == True:
+            curtain.open_curtain()
+        elif curtain.is_now(curtain.close_time) == True:
+            curtain.close_curtain()
+    if curtain.setting == "sensor":
+        curtain.setting_sensor()
     
     received_count += 1
     if received_count == cmdUtils.get_command("count"):
