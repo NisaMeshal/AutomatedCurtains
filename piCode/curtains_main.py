@@ -13,58 +13,57 @@ class RunMotor():
     from datetime import datetime
 
     GPIO.setmode(GPIO.BOARD)
-    
-    time_setting = False
     open = True
     open_time = []
     close_time = []
+    open_GPIO = 12
+    close_GPIO = 11
+    setting = "time"
     
+    def setting_sensor(self):
+        # if var >= some value
+        #     self.open_curtain()
+        # else
+        #     self.close_curtain()
+        pass
+
     def parse_setting(self, payload):
-        if payload["setting"] == "open":
-            if open == True:
-                return
-            else:
-                self.open_curtain()
-                open = True
-        if payload["setting"] == "close":
-            if open == True:
-                self.close_curtain()
-                open = False
-            else:
-                return
         if payload["setting"] == "time":
-            time_setting = True
+            setting = "time"
             open_time = payload["setting"]["open"]
             close_time = payload["setting"]["close"]
+        elif payload["setting"] == "sensor":
+            setting = "sensor"
+            self.setting_sensor()
             
 
     def open_curtain(self):
-        GPIO.setup(12, GPIO.OUT)
+        GPIO.setup(self.open_GPIO, GPIO.OUT)
         stop = False
         try:
             while stop == False:
                 print("turning on")
-                GPIO.output(12, GPIO.HIGH)
+                GPIO.output(self.open_GPIO, GPIO.HIGH)
                 # need to change this depending on the length
                 sleep(10)
                 print("Stopping motor")
-                GPIO.output(12, GPIO.LOW)
+                GPIO.output(self.open_GPIO, GPIO.LOW)
                 stop = True
         finally:
             GPIO.cleanup()
         self.open = True
 
     def close_curtain(self):
-        GPIO.setup(11, GPIO.OUT)
+        GPIO.setup(self.close_GPIO, GPIO.OUT)
         stop = False
         try:
             while stop == False:
                 print("turning on")
-                GPIO.output(11, GPIO.HIGH)
+                GPIO.output(self.close_GPIO, GPIO.HIGH)
                 # need to change this depending on the length
                 sleep(10)
                 print("Stopping motor")
-                GPIO.output(11, GPIO.LOW)
+                GPIO.output(self.close_GPIO, GPIO.LOW)
                 stop = True
         finally:
             GPIO.cleanup()
@@ -72,7 +71,7 @@ class RunMotor():
 
     def is_now(self, time):
         now = datetime.now().time().replace(second=0, microsecond=0)
-        now = int(now.strftime('%H:%M')
+        now = int(now.strftime('%H:%M'))
         now = now.split(":")
         now = [str(x) for x in now]
         if now == time:
@@ -84,12 +83,6 @@ class RunMotor():
 
 
 curtain = RunMotor()
-# This sample uses the Message Broker for AWS IoT to send and receive messages
-# through an MQTT connection. On startup, the device connects to the server,
-# subscribes to a topic, and begins publishing messages to that topic.
-# The device should receive those same messages back from the message broker,
-# since it is subscribed to that same topic.
-
 
 # Parse arguments
 cmdUtils = command_line_utils.CommandLineUtils(
@@ -118,8 +111,6 @@ received_all_event = threading.Event()
 is_ci = cmdUtils.get_command("is_ci", None) != None
 
 # Callback when connection is accidentally lost.
-
-
 def on_connection_interrupted(connection, error, **kwargs):
     print("Connection interrupted. error: {}".format(error))
 
@@ -148,8 +139,6 @@ def on_resubscribe_complete(resubscribe_future):
             sys.exit("Server rejected resubscribe to topic: {}".format(topic))
 
 # Callback when the subscribed topic receives a message
-
-
 def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     """
     Hypothetical message object we might use
@@ -169,7 +158,6 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     received_count += 1
     if received_count == cmdUtils.get_command("count"):
         received_all_event.set()
-
 
 if __name__ == '__main__':
     curtain = RunMotor()
@@ -208,6 +196,16 @@ if __name__ == '__main__':
 
     received_all_event.wait()
     print("{} message(s) received.".format(received_count))
+
+    while True:
+        sleep(60)
+        if curtain.setting == "time":
+            if curtain.is_now(curtain.open_time) == True:
+                curtain.open_curtain()
+            elif curtain.is_now(curtain.close_time) == True:
+                curtain.close_curtain()
+        if curtain.setting == "sensor":
+            curtain.setting_sensor()
 
     # Disconnect
     print("Disconnecting...")
