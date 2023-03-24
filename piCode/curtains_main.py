@@ -206,21 +206,20 @@ if __name__ == '__main__':
     # Wait for all messages to be received.
     # This waits forever if count was set to 0.
     if message_count != 0 and not received_all_event.is_set():
-        print("Waiting for all messages to be received...")
+        print("Waiting for messages to be received...")
+        while True:
+            sleep(5)
+            print("Checking setting")
+            if curtain.setting == "time":
+                if curtain.is_now(curtain.open_time) == True:
+                    curtain.open_curtain()
+                elif curtain.is_now(curtain.close_time) == True:
+                    curtain.close_curtain()
+            if curtain.setting == "sensor":
+                curtain.setting_sensor()
 
     received_all_event.wait()
     print("{} message(s) received.".format(received_count))
-
-    while True:
-        sleep(5)
-        print("Checking setting")
-        if curtain.setting == "time":
-            if curtain.is_now(curtain.open_time) == True:
-                curtain.open_curtain()
-            elif curtain.is_now(curtain.close_time) == True:
-                curtain.close_curtain()
-        if curtain.setting == "sensor":
-            curtain.setting_sensor()
 
     # Disconnect
     print("Disconnecting...")
