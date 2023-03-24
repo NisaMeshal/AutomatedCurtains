@@ -75,6 +75,8 @@ class RunMotor():
         now = now.strftime('%H:%M')
         now = now.split(":")
         now = [int(x) for x in now]
+        print("now: ", now)
+        print("time: ", time)
         if now == time:
             print("it's now")
             return True
@@ -207,7 +209,7 @@ if __name__ == '__main__':
     print("{} message(s) received.".format(received_count))
 
     while True:
-        sleep(30)
+        sleep(5)
         print("Checking setting")
         if curtain.setting == "time":
             if curtain.is_now(curtain.open_time) == True:
