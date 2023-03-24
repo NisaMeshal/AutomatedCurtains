@@ -158,8 +158,9 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     """
     print("Received message from topic '{}': {}".format(topic, payload))
     global received_count
-    print("payload : ", payload)
-    curtain.parse_setting(payload)
+    parsed_payload = json.loads(payload)
+    print("payload : ", parsed_payload)
+    curtain.parse_setting(parsed_payload)
 
     print("Checking setting")
     if curtain.setting == "time":
