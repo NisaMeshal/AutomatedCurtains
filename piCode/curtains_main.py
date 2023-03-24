@@ -177,7 +177,6 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
         received_all_event.set()
 
 if __name__ == '__main__':
-    curtain = RunMotor()
     mqtt_connection = cmdUtils.build_mqtt_connection(
         on_connection_interrupted, on_connection_resumed)
 
