@@ -159,6 +159,7 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     curtain.parse_setting(payload)
     print("Checking setting")
     if curtain.setting == "time":
+        print(curtain.open_time)
         if curtain.is_now(curtain.open_time) == True:
             curtain.open_curtain()
         elif curtain.is_now(curtain.close_time) == True:
