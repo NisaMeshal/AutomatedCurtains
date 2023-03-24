@@ -72,9 +72,9 @@ class RunMotor():
 
     def is_now(self, time):
         now = datetime.now().time().replace(second=0, microsecond=0)
-        now = int(now.strftime('%H:%M'))
+        now = now.strftime('%H:%M')
         now = now.split(":")
-        now = [str(x) for x in now]
+        now = [int(x) for x in now]
         if now == time:
             print("it's now")
             return True
