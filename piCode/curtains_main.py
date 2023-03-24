@@ -158,7 +158,7 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     """
     print("Received message from topic '{}': {}".format(topic, payload))
     global received_count
-    
+    print("topic : ", topic)
     curtain.parse_setting(payload)
 
     print("Checking setting")
