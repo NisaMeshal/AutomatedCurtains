@@ -29,11 +29,11 @@ class RunMotor():
 
     def parse_setting(self, payload):
         if payload[0] == "time":
-            setting = "time"
-            open_time = payload[0]["open"]
-            close_time = payload[0]["close"]
+            self.setting = "time"
+            self.open_time = payload[0]["open"]
+            self.close_time = payload[0]["close"]
         elif payload[0] == "sensor":
-            setting = "sensor"
+            self.setting = "sensor"
             self.setting_sensor()
             
 
