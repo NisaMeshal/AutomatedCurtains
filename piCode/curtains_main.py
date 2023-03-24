@@ -10,9 +10,9 @@ from time import sleep
 from datetime import datetime
 
 
-class RunMotor():
-    
 
+# Class to run the motor and perform functions based on the settings
+class RunMotor():
     GPIO.setmode(GPIO.BOARD)
     open = True
     open_time = []
@@ -28,6 +28,7 @@ class RunMotor():
         #     self.close_curtain()
         pass
 
+    # Parse the setting from the payload
     def parse_setting(self, payload):
         if payload["setting"] == "time":
             self.setting = "time"
@@ -37,7 +38,7 @@ class RunMotor():
             self.setting = "sensor"
             self.setting_sensor()
             
-
+    # Opens the curtains by accessing the GPIO ports on the Pi
     def open_curtain(self):
         GPIO.setup(self.open_GPIO, GPIO.OUT)
         stop = False
@@ -54,6 +55,7 @@ class RunMotor():
             GPIO.cleanup()
         self.open = True
 
+    # Closes the curtains by accessing the GPIO ports on the Pi
     def close_curtain(self):
         GPIO.setup(self.close_GPIO, GPIO.OUT)
         stop = False
@@ -70,6 +72,7 @@ class RunMotor():
             GPIO.cleanup()
         self.open = False
 
+    # Helper function to check if the time passed in is the current time
     def is_now(self, time):
         now = datetime.now().time().replace(second=0, microsecond=0)
         now = now.strftime('%H:%M')
@@ -87,6 +90,7 @@ class RunMotor():
 
 curtain = RunMotor()
 
+# Subscribe callback functions
 # Parse arguments
 cmdUtils = command_line_utils.CommandLineUtils(
     "PubSub - Send and recieve messages through an MQTT connection.")
@@ -118,8 +122,6 @@ def on_connection_interrupted(connection, error, **kwargs):
     print("Connection interrupted. error: {}".format(error))
 
 # Callback when an interrupted connection is re-established.
-
-
 def on_connection_resumed(connection, return_code, session_present, **kwargs):
     print("Connection resumed. return_code: {} session_present: {}".format(
         return_code, session_present))
@@ -142,9 +144,10 @@ def on_resubscribe_complete(resubscribe_future):
             sys.exit("Server rejected resubscribe to topic: {}".format(topic))
 
 # Callback when the subscribed topic receives a message
+# Checks the settings and opens or closes the curtains
 def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     """
-    Hypothetical message object we might use
+    Message object we are using
     {
             "setting": "time" or "sensor",
             "open": [hour, minute],
