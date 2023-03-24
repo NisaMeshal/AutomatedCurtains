@@ -5,12 +5,13 @@ import threading
 import time
 from uuid import uuid4
 import json
+import RPi.GPIO as GPIO
+from time import sleep
+from datetime import datetime
 
 
 class RunMotor():
-    import RPi.GPIO as GPIO
-    from time import sleep
-    from datetime import datetime
+    
 
     GPIO.setmode(GPIO.BOARD)
     open = True
