@@ -164,7 +164,7 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
         print(curtain.open_time)
         if curtain.is_now(curtain.open_time) == True:
             curtain.open_curtain()
-        elif curtain.is_now(curtain.close_time) == True:
+        if curtain.is_now(curtain.close_time) == True:
             curtain.close_curtain()
     if curtain.setting == "sensor":
         curtain.setting_sensor()
