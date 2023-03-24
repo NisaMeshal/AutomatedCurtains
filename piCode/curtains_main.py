@@ -29,11 +29,11 @@ class RunMotor():
         pass
 
     def parse_setting(self, payload):
+        print("payload vals:")
+        print(payload[1])
+        print(payload[2])
         if payload[0] == "time":
             self.setting = "time"
-            print("payload vals:")
-            print(payload[1])
-            print(payload[2])
             self.open_time = payload[1]
             self.close_time = payload[2]
         elif payload[0] == "sensor":
@@ -160,6 +160,7 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     global received_count
     
     curtain.parse_setting(payload)
+
     print("Checking setting")
     if curtain.setting == "time":
         print(curtain.open_time)
