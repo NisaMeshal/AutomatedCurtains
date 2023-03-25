@@ -9,3 +9,5 @@ container just hosts the api. We went this route for a couple reasons. First, we
 javascript and found it much easier to do in Python. Second, if this were a real product we were shipping to real users we would want
 to keep the components seperate for security and ease of use reasons. ie We wouldn't want our users to have to store the AWS certifications
 and keys on their own computers.
+We also used a basic Makefile to automate the building and launching of the docker container containing the api. Simply run 'make run' from
+the directory containing the Makefile and it will launch the api.
