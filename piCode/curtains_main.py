@@ -21,8 +21,8 @@ class RunMotor():
     close_GPIO = 11
     setting = "time"
     
-    def setting_sensor(self):
-        # if var >= some value
+    def setting_sensor(self, light):
+        # if light >= some value
         #     self.open_curtain()
         # else
         #     self.close_curtain()
@@ -46,6 +46,7 @@ class RunMotor():
         try:
             while stop == False:
                 print("turning on")
+                print("Opening curtains")
                 GPIO.output(self.open_GPIO, GPIO.HIGH)
                 # need to change this depending on the length
                 sleep(10)
@@ -64,6 +65,7 @@ class RunMotor():
         try:
             while stop == False:
                 print("turning on")
+                print("Closing curtains")
                 GPIO.output(self.close_GPIO, GPIO.HIGH)
                 # need to change this depending on the length
                 sleep(10)
@@ -167,9 +169,9 @@ def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     print("Checking setting")
     if curtain.setting == "time":
         print(curtain.open_time)
-        if curtain.is_now(curtain.open_time) == True:
+        if curtain.is_now(curtain.open_time) == True & curtain.open == False:
             curtain.open_curtain()
-        if curtain.is_now(curtain.close_time) == True:
+        if curtain.is_now(curtain.close_time) == True & curtain.open == True:
             curtain.close_curtain()
     if curtain.setting == "sensor":
         curtain.setting_sensor()
@@ -212,15 +214,15 @@ if __name__ == '__main__':
     if message_count != 0 and not received_all_event.is_set():
         print("Waiting for messages to be received...")
         while True:
-            sleep(5)
+            sleep(60)
             print("Checking setting")
             if curtain.setting == "time":
-                if curtain.is_now(curtain.open_time) == True:
+                if curtain.is_now(curtain.open_time) == True and curtain.open == False:
                     curtain.open_curtain()
-                elif curtain.is_now(curtain.close_time) == True:
+                if curtain.is_now(curtain.close_time) == True and curtain.open == True:
                     curtain.close_curtain()
-            if curtain.setting == "sensor":
-                curtain.setting_sensor()
+                if curtain.setting == "sensor":
+                    curtain.setting_sensor()
 
     received_all_event.wait()
     print("{} message(s) received.".format(received_count))
