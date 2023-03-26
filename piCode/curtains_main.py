@@ -40,6 +40,7 @@ class RunMotor():
             
     # Opens the curtains by accessing the GPIO ports on the Pi
     def open_curtain(self):
+        GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.open_GPIO, GPIO.OUT)
         stop = False
         try:
@@ -57,6 +58,7 @@ class RunMotor():
 
     # Closes the curtains by accessing the GPIO ports on the Pi
     def close_curtain(self):
+        GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.close_GPIO, GPIO.OUT)
         stop = False
         try:
