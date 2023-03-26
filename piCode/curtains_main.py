@@ -221,8 +221,8 @@ if __name__ == '__main__':
                     curtain.open_curtain()
                 if curtain.is_now(curtain.close_time) == True and curtain.open == True:
                     curtain.close_curtain()
-                if curtain.setting == "sensor":
-                    curtain.setting_sensor()
+            if curtain.setting == "sensor":
+                curtain.setting_sensor()
 
     received_all_event.wait()
     print("{} message(s) received.".format(received_count))
