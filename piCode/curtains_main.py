@@ -68,7 +68,7 @@ class RunMotor():
                 print("Closing curtains")
                 GPIO.output(self.close_GPIO, GPIO.HIGH)
                 # need to change this depending on the length
-                sleep(4)
+                sleep(3)
                 print("Stopping motor")
                 GPIO.output(self.close_GPIO, GPIO.LOW)
                 stop = True
