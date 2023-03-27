@@ -1,9 +1,28 @@
 body {
-    background-color: bisque;
+    background-image: url('/frontend/website_images/curtain_bg.jpg');
+    background-size: cover;
+
 }
 
-h1 {
-    color: blue;
+.container {
+  position: relative;
+  background-color: cornsilk;
+  width: 50%;
+  height: 780px;
+  border-radius: 3%;
+  margin-top: 20px;
+}
+
+.container-two {
+  position: relative;
+  text-align: center;
+}
+
+#title {
+    color:#3D550C;
+    position: relative;
+    padding-top: 50px;
+    font-size: 50px;
 }
 
 thead{

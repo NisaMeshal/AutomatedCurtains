@@ -34,24 +34,27 @@
     </head>
     
     <body>
-        <h1>Automated Curtain Controls</h1>
+        <div class="container">
+          <div class="container-two">
+            <h1 id="title">AUTOMATED CURTAINS</h1>
+          </div>
     
-        <form id="form01" name="form01" action="http://localhost:80/">
-            <div class="form-item">
-              <label><input type="radio" name="setting" value="1" checked/>Sensor</label>
-              <label><input type="radio" name="setting" value="0"/>Time</label>
-            </div>
-            <fieldset name="times" disabled>
+          <form id="form01" name="form01" action="http://localhost:80/">
               <div class="form-item">
-                <p>Open Time: <input type="time" id="open" name="open" required> </p>
+                <label><input type="radio" name="setting" value="1" checked/>Sensor</label>
+                <label><input type="radio" name="setting" value="0"/>Time</label>
               </div>
-              <div class="form-item">
-                <p>Close Time: <input type="time" id="close" name="close" required> </p>
-              </div>
-            </fieldset>
-            <br>
-            <button id="submit">Submit</button>
-          </form>
-          
+              <fieldset name="times" disabled>
+                <div class="form-item">
+                  <p>Open Time: <input type="time" id="open" name="open" required> </p>
+                </div>
+                <div class="form-item">
+                  <p>Close Time: <input type="time" id="close" name="close" required> </p>
+                </div>
+              </fieldset>
+              <br>
+              <button id="submit">Submit</button>
+            </form>
+        </div>
     </body>
 </html>
